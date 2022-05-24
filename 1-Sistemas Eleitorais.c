@@ -1,10 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
+
 int main(){
 	int idade;
-		printf(">>>>Sistema Eleitoral<<<<\n");
-		printf("insira a idade: ");
-		scanf("%d",&idade);
+	printf(">>>>Sistema Eleitoral<<<<\n");
+	printf("insira a idade: ");
+	scanf("%d",&idade);
 			if(idade<0){
 				printf("nao nasceu\n");
 			}else
