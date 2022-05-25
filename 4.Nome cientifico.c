@@ -24,6 +24,6 @@ int main (void){
 	printf("%c.",toupper(nome[0]));
 	for(i=tamanho-1;i>=0;i--){
 		if(nome[i]==' ')
-		printf("%c",toupper(nome[i+1]));
+		printf("%c;",toupper(nome[i+1]));
 	}}
 	
