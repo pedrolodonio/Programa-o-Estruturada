@@ -48,6 +48,7 @@ struct Data{
 struct MelhorVolta{
 	int idPiloto;
 	int idCircuito;
+	char equipe[100];
 	struct Tempo tempoRecorde;
 	struct Data data;
 };
@@ -72,7 +73,7 @@ void pedePais(char paisOrigem[100], char pedido[100]);
 void exibePilotos(struct Piloto pilotos[MAX_PILOTO], int quantidadePilotos);
 void exibeCircuitos(struct Circuito circuitos[MAX_CIRCUITO],int qntdCircuitos);
 void pedeNome(char nome[100], char pedido[50]);
-
+void exibemelhoresVoltas(struct MelhorVolta volta[MAX_MELHORES_VOLTAS],int qntdvoltas);
 
 int main() {
 	setlocale(LC_ALL, "Portuguese");
@@ -97,12 +98,14 @@ int main() {
 		printf("BEM VINDO AO SISTEMA DA FORMULA 1\n\n");
 		printf("1) Cadastrar um novo piloto\n");
 		printf("2) Cadastrar um novo circuito\n");
-		printf("3) Exibir pilotos cadastrados\n");
-		printf("4) Exibir circuitos cadastrados\n");
-		printf("5) Exibir todos os dados cadastrados\n");
-		printf("6) Pesquisar piloto por nome\n");
-		printf("7) Incluir a melhor volta\n");
-		printf("8) Encerrar o programa\n");
+		printf("3) Incluir a melhor volta\n");
+		printf("4) Exibir pilotos cadastrados\n");
+		printf("5) Exibir circuitos cadastrados\n");
+		printf("6) Exibir melhores voltas\n");
+		printf("7) Exibir todos os dados cadastrados\n");
+		printf("8) Pesquisar piloto por nome\n");
+		printf("9) Pesquisar a volta por equipe\n");
+		printf("10) Encerrar o programa\n");
 		printf("Digite a sua opção: ");
 		scanf("%i", &opcaoUsuario);
 		fflush(stdin);
@@ -117,16 +120,22 @@ int main() {
 				circuitosJaRegistrados=incluiNovoCircuito(circuitosRegistrados,circuitosJaRegistrados);
 				break;
 			case 3:
+				melhoresVoltasJaRegistradas = incluiMelhorVolta(pilotosRegistrados, pilotosJaRegistrados, circuitosRegistrados, circuitosJaRegistrados, melhoresVoltasRegistradas, melhoresVoltasJaRegistradas);
+				break;
+			case 4:
 				exibePilotos(pilotosRegistrados, pilotosJaRegistrados);
 				break;
-			case 4: 
-				exibeCircuitos(circuitosRegistrados,circuitosJaRegistrados);
-				break;
-			case 5:
-				exibePilotos(pilotosRegistrados, pilotosJaRegistrados);
+			case 5: 
 				exibeCircuitos(circuitosRegistrados,circuitosJaRegistrados);
 				break;
 			case 6:
+				exibemelhoresVoltas(melhoresVoltasRegistradas,melhoresVoltasJaRegistradas);
+			case 7:
+				exibePilotos(pilotosRegistrados, pilotosJaRegistrados);
+				exibeCircuitos(circuitosRegistrados,circuitosJaRegistrados);
+				exibemelhoresVoltas(melhoresVoltasRegistradas,melhoresVoltasJaRegistradas);
+				break;
+			case 8:
 				printf("digite o piloto que deseja buscar:");
 				scanf("%[^\n]s",&consulta);
 				fflush(stdin);
@@ -151,10 +160,32 @@ int main() {
 					printf("\n\n");
 				}			
 				break;
-			case 7:
-				melhoresVoltasJaRegistradas = incluiMelhorVolta(pilotosRegistrados, pilotosJaRegistrados, circuitosRegistrados, circuitosJaRegistrados, melhoresVoltasRegistradas, melhoresVoltasJaRegistradas);
+			case 9:
+				printf("digite a equipe que deseja buscar:");
+				scanf("%[^\n]s",&consulta);
+				fflush(stdin);
+				
+				qntdvezes = 0;
+				for(x=0; x<melhoresVoltasJaRegistradas; x++){
+					int retorno= strcmp(melhoresVoltasRegistradas[x].equipe,consulta);
+					if(retorno==0){
+						qntdvezes;
+ 						printf("equipe:%s\n",melhoresVoltasRegistradas[x].equipe);
+ 						printf("piloto:%d\n", melhoresVoltasRegistradas[x].idPiloto);
+						printf("circuito:%d\n", melhoresVoltasRegistradas[x].idCircuito);
+						printf("tempo recorde:%d:%d,%d \n", melhoresVoltasRegistradas[x].tempoRecorde.minutos,melhoresVoltasRegistradas[x].tempoRecorde.segundos,melhoresVoltasRegistradas[x].tempoRecorde.milisegundos);
+						printf("data: %d/%d/%d\n", melhoresVoltasRegistradas[x].data.dia,melhoresVoltasRegistradas[x].data.mes,melhoresVoltasRegistradas[x].data.ano);
+						printf("\n\n");
+						system("PAUSE");
+					}		 
+				}	
+			
+				if(qntdvezes != 0){
+					printf("Não existe equipe cadastrada com esse nome.");
+					printf("\n\n");
+				}			
 				break;
-			case 8:
+			case 10:
 				return 0;
 				break;
 			default: 
@@ -296,6 +327,10 @@ int incluiMelhorVolta(struct Piloto pilotosRegistrados[MAX_PILOTO], int pilotosJ
 	scanf("%d", &idCircuito);
 	fflush(stdin);
 	
+	printf("Digite a equipe do piloto que realizou essa volta: ");
+	scanf("%s", &melhorVolta.equipe);
+	fflush(stdin);
+	
 	// essa parte é para verificar se ambos os ids existem de fato:
 	
 	//1) verificar se o id do piloto existe: 
@@ -349,6 +384,26 @@ int incluiMelhorVolta(struct Piloto pilotosRegistrados[MAX_PILOTO], int pilotosJ
 	printf("\n");
 	system("PAUSE");
 	return melhoresVoltasJaRegistradas;
+}
+
+void exibemelhoresVoltas(struct MelhorVolta volta[MAX_MELHORES_VOLTAS],int qntdvoltas){
+	int i;
+	system("CLS");
+	printf("============= VOLTAS REGISTRADAS ============\n\n");
+
+	for(i = 0; i < qntdvoltas; i++){
+		// imprimindo o código,nome,pais e o tamanho do circuito
+		printf("data:%d/%d/%d", volta[i].data.dia,volta[i].data.mes,volta[i].data.ano);
+		printf("piloto: %s\n", volta[i].idPiloto);
+		printf("Pais: %s\n", volta[i].idCircuito);
+		printf("equipe:", volta[i].equipe);
+		printf("\n\n");
+	}
+	
+	printf("\n===============================================\n\n");
+	
+	// pausa o programa esperando uma entrada do usuário para prosseguir o programa normalmente.
+	system("PAUSE");
 }
 
 int pedeIdade(){
