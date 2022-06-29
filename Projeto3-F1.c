@@ -277,6 +277,7 @@ int incluiNovoPiloto(struct Piloto pilotosRegistrados[MAX_PILOTO], int pilotosJa
 	// preenche as informações do piloto que está sendo cadastrado
 	piloto.codigo = pedeIdPiloto(pilotosRegistrados, pilotosJaRegistrados);
 	pedeNome(piloto.nome, "piloto");
+	printf("Reino Unido\n Alemanha\n Brasil\n Argentina\n França\n Áustria\n Austrália\n Finlândia\n Itália\n Espanha\n Estados Unidos\n Canadá\n África do Sul\n Nova Zelândia\n Países Baixos\n");	
 	pedePais(piloto.paisOrigem, "piloto");
 	piloto.idade = pedeIdade();
 	piloto.sexo = pedeSexo();
